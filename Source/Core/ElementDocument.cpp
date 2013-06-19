@@ -82,8 +82,16 @@ void ElementDocument::ProcessHeader(const DocumentHeader* document_header)
 			Log::Message(Log::LT_WARNING, "Template %s not found", header.template_resources[i].CString());
 	}
 
+    // fill in external links, noting that merged header below can contain two copies of templates
+    external_links.clear();
+    external_links.reserve( header.template_resources.size() + header.rcss_external.size() +  document_header->rcss_external.size() );
+    external_links.insert( external_links.end(), header.template_resources.begin(), header.template_resources.end() );
+    external_links.insert( external_links.end(), header.rcss_external.begin(), header.rcss_external.end() );
+    external_links.insert( external_links.end(), document_header->rcss_external.begin(), document_header->rcss_external.end() );
+
 	// Merge the document's header last, as it is the most overriding.
 	header.MergeHeader(*document_header);
+
 
 	// Set the title to the document title.
 	title = document_header->title;
@@ -201,6 +209,13 @@ void ElementDocument::SetStyleSheet(StyleSheet* _style_sheet)
 StyleSheet* ElementDocument::GetStyleSheet() const
 {
 	return style_sheet;
+}
+
+
+// Returns the document's external links (style sheet and template files).
+const StringList& ElementDocument::GetExternalLinks() const
+{
+    return external_links;
 }
 
 // Brings the document to the front of the document stack.

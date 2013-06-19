@@ -86,6 +86,10 @@ public:
 	/// @return The document's style sheet.
 	virtual StyleSheet* GetStyleSheet() const;
 
+	/// Returns the document's external links (style sheet and template files).
+	/// @return The document's external links (style sheet and template files).
+    const StringList& GetExternalLinks() const;
+
 	/// Brings the document to the front of the document stack.
 	void PullToFront();
 	/// Sends the document to the back of the document stack.
@@ -166,6 +170,9 @@ private:
 	StyleSheet* style_sheet;
 
 	Context* context;
+
+    // external linked file paths
+    StringList external_links;
 
 	// Is the current display modal
 	bool modal;
