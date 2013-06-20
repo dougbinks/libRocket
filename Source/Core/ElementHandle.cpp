@@ -113,7 +113,21 @@ void ElementHandle::ProcessEvent(Event& event)
 
 			if (size_target)
 			{
-				const Property *margin_top, *margin_bottom, *margin_left, *margin_right;
+                // we need to reverse the sizing operation if the handle is above or on left
+                float target_top = size_target->GetAbsoluteTop();
+                float our_top = GetAbsoluteTop();
+                if(  our_top <= target_top )
+                {
+                    y = -y;
+                }
+                float target_left = size_target->GetAbsoluteLeft();
+                float our_left = GetAbsoluteLeft();
+                if(  our_left <= target_left )
+                {
+                    x = -x;
+                }
+                
+                const Property *margin_top, *margin_bottom, *margin_left, *margin_right;
 				size_target->GetMarginProperties(&margin_top, &margin_bottom, &margin_left, &margin_right);
 
 				// Check if we have auto-margins; if so, they have to be set to the current margins.
