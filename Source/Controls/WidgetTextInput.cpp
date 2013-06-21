@@ -263,11 +263,51 @@ void WidgetTextInput::ProcessEvent(Core::Event& event)
 			UpdateCursorPosition();
 		}
 	}
+	else if (event == "focus" &&
+			 event.GetTargetElement() == parent)
+	{
+		UpdateSelection(false);
+		ShowCursor(true, false);
+	}
+	else if (event == "blur" &&
+		     event.GetTargetElement() == parent)
+	{
+		ClearSelection();
+		ShowCursor(false, false);
+	}	
+	else if ((event == "mousedown" ||
+			  event == "drag") &&
+			 event.GetTargetElement() == parent)
+	{
+		Rocket::Core::Vector2f mouse_position = Rocket::Core::Vector2f((float) event.GetParameter< int >("mouse_x", 0),
+																 (float) event.GetParameter< int >("mouse_y", 0));
+		mouse_position -= text_element->GetAbsoluteOffset();
+
+		cursor_line_index = CalculateLineIndex(mouse_position.y);
+		cursor_character_index = CalculateCharacterIndex(cursor_line_index, mouse_position.x);
+
+		UpdateAbsoluteCursor();
+		UpdateCursorPosition();
+		ideal_cursor_position = cursor_position.x;
+
+		UpdateSelection(event == "drag" || event.GetParameter< int >("shift_key", 0) > 0);
+
+		ShowCursor(true);
+	}
+    else if (parent->IsDisabled() && event == "keydown")
+    {
+        // process ctrl-c (copy) when disabled
+		if( Core::Input::KI_C == (Core::Input::KeyIdentifier) event.GetParameter< int >("key_identifier", 0) 
+            && event.GetParameter< int >("ctrl_key", 0) > 0 )
+        {
+            CopySelection();
+        }
+    }
 	else if (parent->IsDisabled())
 	{
 		return;
 	}
-	else if (event == "keydown")
+    else if (event == "keydown")
 	{
 		Core::Input::KeyIdentifier key_identifier = (Core::Input::KeyIdentifier) event.GetParameter< int >("key_identifier", 0);
 		bool numlock = event.GetParameter< int >("num_lock_key", 0) > 0;
@@ -387,37 +427,7 @@ void WidgetTextInput::ProcessEvent(Core::Event& event)
 		ShowCursor(true);
 		event.StopPropagation();
 	}
-	else if (event == "focus" &&
-			 event.GetTargetElement() == parent)
-	{
-		UpdateSelection(false);
-		ShowCursor(true, false);
-	}
-	else if (event == "blur" &&
-		     event.GetTargetElement() == parent)
-	{
-		ClearSelection();
-		ShowCursor(false, false);
-	}	
-	else if ((event == "mousedown" ||
-			  event == "drag") &&
-			 event.GetTargetElement() == parent)
-	{
-		Rocket::Core::Vector2f mouse_position = Rocket::Core::Vector2f((float) event.GetParameter< int >("mouse_x", 0),
-																 (float) event.GetParameter< int >("mouse_y", 0));
-		mouse_position -= text_element->GetAbsoluteOffset();
 
-		cursor_line_index = CalculateLineIndex(mouse_position.y);
-		cursor_character_index = CalculateCharacterIndex(cursor_line_index, mouse_position.x);
-
-		UpdateAbsoluteCursor();
-		UpdateCursorPosition();
-		ideal_cursor_position = cursor_position.x;
-
-		UpdateSelection(event == "drag" || event.GetParameter< int >("shift_key", 0) > 0);
-
-		ShowCursor(true);
-	}
 }
 
 // Adds a new character to the string at the cursor position.
