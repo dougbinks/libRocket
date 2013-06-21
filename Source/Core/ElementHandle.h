@@ -55,6 +55,7 @@ protected:
 	Vector2i drag_start;
 	Vector2f move_original_position;
 	Vector2f size_original_size;
+	Vector2f size_movement_sign;
 
 	Element* move_target;
 	Element* size_target;

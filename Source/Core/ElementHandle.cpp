@@ -96,7 +96,20 @@ void ElementHandle::ProcessEvent(Event& event)
 				move_original_position.y = move_target->GetOffsetTop();
 			}
 			if (size_target)
+            {
 				size_original_size = size_target->GetBox().GetSize(Box::CONTENT);
+                size_movement_sign = Vector2f(1.0f,1.0f);
+                float target_midy = size_target->GetAbsoluteTop() + 0.5f * size_original_size.y;
+                if(  drag_start.y <= target_midy )
+                {
+                    size_movement_sign.y = -1.0f;
+                }
+                float target_midx = size_target->GetAbsoluteLeft() + 0.5f * size_original_size.x;
+                if(  drag_start.x <= target_midx )
+                {
+                    size_movement_sign.x = -1.0f;
+                }
+            }
 		}
 		else if (event == DRAG)
 		{
@@ -113,20 +126,7 @@ void ElementHandle::ProcessEvent(Event& event)
 
 			if (size_target)
 			{
-                // we need to reverse the sizing operation if the handle is above or on left
-                float target_midy = size_target->GetAbsoluteTop() - 0.5f * size_target->GetClientHeight();
-                float our_top     = GetAbsoluteTop();
-                if(  our_top > target_midy )
-                {
-                    y = -y;
-                }
-                float target_midx = size_target->GetAbsoluteLeft() - 0.5f * size_target->GetClientWidth();
-                float our_left    = GetAbsoluteLeft();
-                if(  our_left > target_midx )
-                {
-                    x = -x;
-                }
-                
+                // we need to reverse the sizing operation if the handle is above or on left                
                 const Property *margin_top, *margin_bottom, *margin_left, *margin_right;
 				size_target->GetMarginProperties(&margin_top, &margin_bottom, &margin_left, &margin_right);
 
@@ -139,9 +139,9 @@ void ElementHandle::ProcessEvent(Event& event)
 					size_target->SetProperty(MARGIN_BOTTOM, Property((float) Math::RealToInteger(size_target->GetBox().GetEdge(Box::MARGIN, Box::BOTTOM)), Property::PX));
 				if (margin_left->unit == Property::KEYWORD)
 					size_target->SetProperty(MARGIN_LEFT, Property((float) Math::RealToInteger(size_target->GetBox().GetEdge(Box::MARGIN, Box::LEFT)), Property::PX));
-
-				int new_x = Math::RealToInteger(size_original_size.x + x);
-				int new_y = Math::RealToInteger(size_original_size.y + y);
+                
+				int new_x = Math::RealToInteger(size_original_size.x + x * size_movement_sign.x);
+				int new_y = Math::RealToInteger(size_original_size.y + y * size_movement_sign.y);
 
 				size_target->SetProperty(WIDTH, Property(Math::Max< float >((float) new_x, 0), Property::PX));
 				size_target->SetProperty(HEIGHT, Property(Math::Max< float >((float) new_y, 0), Property::PX));
