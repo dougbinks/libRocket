@@ -114,15 +114,15 @@ void ElementHandle::ProcessEvent(Event& event)
 			if (size_target)
 			{
                 // we need to reverse the sizing operation if the handle is above or on left
-                float target_top = size_target->GetAbsoluteTop();
-                float our_top = GetAbsoluteTop();
-                if(  our_top <= target_top )
+                float target_midy = size_target->GetAbsoluteTop() - 0.5f * size_target->GetClientHeight();
+                float our_top     = GetAbsoluteTop();
+                if(  our_top > target_midy )
                 {
                     y = -y;
                 }
-                float target_left = size_target->GetAbsoluteLeft();
-                float our_left = GetAbsoluteLeft();
-                if(  our_left <= target_left )
+                float target_midx = size_target->GetAbsoluteLeft() - 0.5f * size_target->GetClientWidth();
+                float our_left    = GetAbsoluteLeft();
+                if(  our_left > target_midx )
                 {
                     x = -x;
                 }
