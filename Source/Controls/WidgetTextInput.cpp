@@ -178,6 +178,9 @@ void WidgetTextInput::UpdateSelectionColours()
 // Updates the cursor, if necessary.
 void WidgetTextInput::OnUpdate()
 {
+    scroll_offset.x = parent->GetScrollLeft();
+	scroll_offset.y = parent->GetScrollTop();
+
 	if (cursor_timer > 0)
 	{
 		float current_time = Core::GetSystemInterface()->GetElapsedTime();
