@@ -92,6 +92,8 @@
       <AdditionalIncludeDirectories>..\..\Include;..\..\Dependencies\freetype-2.4.10\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>
       </PrecompiledHeader>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <AdditionalDependencies>freetype2410MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -107,6 +109,8 @@
       <AdditionalIncludeDirectories>..\..\Include;..\..\Dependencies\freetype-2.4.10\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>
       </PrecompiledHeader>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <AdditionalDependencies>freetype2410MTx64.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -122,6 +126,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\Include;..\..\Dependencies\freetype-2.4.10\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>freetype2410MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -136,6 +141,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\Include;..\..\Dependencies\freetype-2.4.10\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>freetype2410MTx64.lib;%(AdditionalDependencies)</AdditionalDependencies>
