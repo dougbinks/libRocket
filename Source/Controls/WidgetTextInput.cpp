@@ -394,7 +394,7 @@ void WidgetTextInput::ProcessEvent(Core::Event& event)
     				for (size_t i = 0; i < clipboard_content.Length(); ++i)
     				{
     					if (max_length > 0 &&
-    						(int) Core::WString(GetElement()->GetAttribute< Rocket::Core::String >("value", "")).Length() < max_length)
+    						(int) Core::WString(GetElement()->GetAttribute< Rocket::Core::String >("value", "")).Length() > max_length)
     						break;
 
     					AddCharacter(clipboard_content[i]);
